@@ -15,7 +15,6 @@ public class deleteContact extends AppCompatActivity {
 
     ListView lv_contacts;
 
-    AddressBook addressBook;
 
     personAdapter adapter;
 
@@ -26,16 +25,18 @@ public class deleteContact extends AppCompatActivity {
 
         lv_contacts = findViewById(R.id.lv_contacts);
 
-        addressBook =  GlobalList.getGlobalList();
 
-        adapter = new personAdapter(deleteContact.this, addressBook);
+
+        adapter = new personAdapter(deleteContact.this, GlobalList.getGlobalList());
 
         lv_contacts.setAdapter(adapter);
+        Toast.makeText(GlobalList.getAppContext(), "listsize=" + GlobalList.getGlobalList().getTheList().size(), Toast.LENGTH_SHORT).show();
+
 
         lv_contacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(deleteContact.this, "contact deleted: " + addressBook.getTheList().get(position).getName() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(deleteContact.this, "contact deleted: " + GlobalList.getGlobalList().getTheList().get(position).getName() , Toast.LENGTH_SHORT).show();
                 deleteContact(position);
 
             }
@@ -43,7 +44,8 @@ public class deleteContact extends AppCompatActivity {
     }
 
     public void deleteContact(int position){
-        addressBook.getTheList().remove(position);
+        GlobalList.getGlobalList().getTheList().remove(position);
+        Toast.makeText(GlobalList.getAppContext(), "listsize=" + GlobalList.getGlobalList().getTheList().size(), Toast.LENGTH_SHORT).show();
 
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);

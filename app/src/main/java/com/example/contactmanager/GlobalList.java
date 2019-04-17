@@ -11,15 +11,16 @@ public class GlobalList extends Application {
 
     private static Context context;
 
-    private static AddressBook globalList = new AddressBook();
+    private static AddressBook globalList;
 
     public static AddressBook getGlobalList() {
-        return globalList;
+        return  globalList;
     }
 
 
     public void onCreate() {
         super.onCreate();
+        GlobalList.globalList = new AddressBook();
         GlobalList.context = getApplicationContext();
     }
 

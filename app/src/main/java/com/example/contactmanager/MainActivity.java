@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.contactmanager.businesServices.BusinessService;
 import com.example.contactmanager.model.AddressBook;
@@ -21,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
     ListView lv_contactList;
 
     personAdapter adapter;
-
-    AddressBook addressBook;
 
 
     @Override
@@ -38,11 +37,12 @@ public class MainActivity extends AppCompatActivity {
         lv_contactList = findViewById(R.id.lv_contactList);
 
 
-        addressBook =  GlobalList.getGlobalList();
 
-        adapter = new personAdapter(MainActivity.this, addressBook);
+
+        adapter = new personAdapter(MainActivity.this, GlobalList.getGlobalList());
 
         lv_contactList.setAdapter(adapter);
+        Toast.makeText(this, "listsize=" + GlobalList.getGlobalList().getTheList().size(), Toast.LENGTH_SHORT).show();
 
 
 
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             if(positionToEdit > -1){
-                addressBook.getTheList().remove(positionToEdit);
+                GlobalList.getGlobalList().getTheList().remove(positionToEdit);
             }
 
 
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 BusinessService bs = new BusinessService();
                 Log.d("noah", bs.getList().toString());
-                bs.saveAllLists(addressBook);
+                bs.saveAllLists(GlobalList.getGlobalList());
             }
         });
 
@@ -112,13 +112,15 @@ public class MainActivity extends AppCompatActivity {
                 BusinessService bs = new BusinessService();
 
                 //bs.setList(bs.loadAllLists());
-                addressBook = bs.loadAllLists();
-                Log.d("noah", addressBook.toString());
+                GlobalList.setGlobalList(bs.loadAllLists());
+                Log.d("noah", GlobalList.getGlobalList().toString());
 
 
-                adapter = new personAdapter(MainActivity.this, addressBook);
+                adapter = new personAdapter(MainActivity.this, GlobalList.getGlobalList());
                 lv_contactList.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+                Toast.makeText(GlobalList.getAppContext(), "listsize=" + GlobalList.getGlobalList().getTheList().size(), Toast.LENGTH_SHORT).show();
+
 
 
 
@@ -133,7 +135,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // get contents of person
-        BaseContact p = addressBook.getTheList().get(position);
+        BaseContact p = GlobalList.getGlobalList().getTheList().get(position);
+        Toast.makeText(GlobalList.getAppContext(), "listsize=" + GlobalList.getGlobalList().getTheList().size(), Toast.LENGTH_SHORT).show();
 
         if (p instanceof PersonContact) {
             Intent i = new Intent(getApplicationContext(), addPersonContact.class);

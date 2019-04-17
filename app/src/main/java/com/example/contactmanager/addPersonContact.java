@@ -91,7 +91,7 @@ public class addPersonContact extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                BusinessService bs = new BusinessService();
+               // BusinessService bs = new BusinessService();
                 //get strings from et's
                 String newName = et_name.getText().toString();
                 String newStreet = et_streetName.getText().toString();
@@ -113,6 +113,8 @@ public class addPersonContact extends AppCompatActivity {
 
                 PersonContact p = new PersonContact(newName, newStreet, newCity, newState, newZip, newCountry, newNumber, newEmail, newPhoto, newRelationship, newBirthday);
 
+                addressBook = GlobalList.getGlobalList();
+                Toast.makeText(GlobalList.getAppContext(), "listsize=" + addressBook.getTheList().size(), Toast.LENGTH_SHORT).show();
 
                 addressBook.getTheList().add(p);
                 Log.d("noah", addressBook.toString());

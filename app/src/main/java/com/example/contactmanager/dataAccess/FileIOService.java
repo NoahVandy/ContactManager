@@ -27,7 +27,7 @@ public class FileIOService implements DataAccessService {
 
 	@Override
 	public AddressBook readAllData() {
-		AddressBook a = new AddressBook(true);
+		AddressBook a = GlobalList.getGlobalList();
 		
 		try {
 			File path = GlobalList.getAppContext().getExternalFilesDir(null);
