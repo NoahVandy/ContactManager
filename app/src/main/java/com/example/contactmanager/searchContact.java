@@ -34,7 +34,7 @@ public class searchContact extends AppCompatActivity {
         btn_submit = findViewById(R.id.btn_submit);
         lv_searchContacts = findViewById(R.id.lv_searchContacts);
 
-        addressBook = ((GlobalList) this.getApplication()).getGlobalList();
+        addressBook =  GlobalList.getGlobalList();
 
 
 

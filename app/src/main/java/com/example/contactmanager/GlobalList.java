@@ -27,7 +27,7 @@ public class GlobalList extends Application {
         return GlobalList.context;
     }
 
-//    public static void setGlobalList(AddressBook addressBook){
-//        addressBook = addressBook;
-//    }
+    public static void setGlobalList(AddressBook addressBook){
+        addressBook = addressBook;
+    }
 }

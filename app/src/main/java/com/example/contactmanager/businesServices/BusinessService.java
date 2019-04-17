@@ -34,7 +34,7 @@ public class BusinessService {
 
 		addressBook = GlobalList.getGlobalList();
 		DataAccessService das = new FileIOService();
-		das.writeAllData(this);
+		das.writeAllData(this.addressBook);
 		
 
 	}
@@ -42,7 +42,8 @@ public class BusinessService {
 	public AddressBook loadAllLists() {
 
 		DataAccessService das = new FileIOService();
-		return das.readAllData().getList();
+
+		return das.readAllData();
 	}
 	
 	public AddressBook getList() {

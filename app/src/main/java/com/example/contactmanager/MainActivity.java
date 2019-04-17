@@ -111,11 +111,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 BusinessService bs = new BusinessService();
 
+                //bs.setList(bs.loadAllLists());
                 addressBook = bs.loadAllLists();
                 Log.d("noah", addressBook.toString());
 
 
+                adapter = new personAdapter(MainActivity.this, addressBook);
+                lv_contactList.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+
 
 
 

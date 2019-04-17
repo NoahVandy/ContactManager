@@ -26,28 +26,29 @@ public class FileIOService implements DataAccessService {
 
 
 	@Override
-	public BusinessService readAllData() {
-		BusinessService bs = new BusinessService();
+	public AddressBook readAllData() {
+		AddressBook a = new AddressBook(true);
 		
 		try {
-			bs = new ObjectMapper().readerFor(BusinessService.class).readValue(new File("Contacts.json.txt"));
+			File path = GlobalList.getAppContext().getExternalFilesDir(null);
+			a = new ObjectMapper().readerFor(AddressBook.class).readValue(new File(path,"Contacts.json.txt"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return bs;
+		return a;
 	}
 
 	@Override
-	public void writeAllData(BusinessService bs) {
+	public void writeAllData(AddressBook a) {
 	ObjectMapper om = new ObjectMapper();
 		
 		try {
 			File path = GlobalList.getAppContext().getExternalFilesDir(null);
 			File f = new File(path, "Contacts.json.txt");
 			Log.d("noah", f.getAbsolutePath().toString());
-			om.writerWithDefaultPrettyPrinter().writeValue(f, bs);
+			om.writerWithDefaultPrettyPrinter().writeValue(f, a);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

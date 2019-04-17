@@ -31,7 +31,7 @@ public class addBusinessContact extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_business_contact);
 
-        addressBook = ((GlobalList) this.getApplication()).getGlobalList();
+        addressBook =  GlobalList.getGlobalList();
 
 
 

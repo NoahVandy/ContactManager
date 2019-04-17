@@ -26,7 +26,7 @@ public class deleteContact extends AppCompatActivity {
 
         lv_contacts = findViewById(R.id.lv_contacts);
 
-        addressBook = ((GlobalList) this.getApplication()).getGlobalList();
+        addressBook =  GlobalList.getGlobalList();
 
         adapter = new personAdapter(deleteContact.this, addressBook);
 

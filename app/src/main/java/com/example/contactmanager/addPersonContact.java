@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.contactmanager.businesServices.BusinessService;
 import com.example.contactmanager.model.AddressBook;
 import com.example.contactmanager.model.PersonContact;
 
@@ -31,7 +32,7 @@ public class addPersonContact extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_person_contact);
 
-        addressBook = ((GlobalList) this.getApplication()).getGlobalList();
+        addressBook =  GlobalList.getGlobalList();
 
 
         btn_addPerson = findViewById(R.id.btn_addPerson);
@@ -90,6 +91,7 @@ public class addPersonContact extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                BusinessService bs = new BusinessService();
                 //get strings from et's
                 String newName = et_name.getText().toString();
                 String newStreet = et_streetName.getText().toString();
@@ -111,8 +113,8 @@ public class addPersonContact extends AppCompatActivity {
 
                 PersonContact p = new PersonContact(newName, newStreet, newCity, newState, newZip, newCountry, newNumber, newEmail, newPhoto, newRelationship, newBirthday);
 
+
                 addressBook.getTheList().add(p);
-                Collections.sort(addressBook.getTheList());
                 Log.d("noah", addressBook.toString());
 
                 Intent i = new Intent(v.getContext(), MainActivity.class);
