@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.example.contactmanager.GlobalList;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +15,9 @@ import com.example.contactmanager.model.AddressBook;
 
 public class BusinessService {
 
-	public AddressBook list;
+	AddressBook addressBook;
+
+
 	
 	public BusinessService(AddressBook list) {
 		super();
@@ -28,7 +31,8 @@ public class BusinessService {
 	
 	
 	public void saveAllLists(AddressBook list) {
-	
+
+		addressBook = GlobalList.getGlobalList();
 		DataAccessService das = new FileIOService();
 		das.writeAllData(this);
 		
@@ -36,20 +40,21 @@ public class BusinessService {
 	}
 	
 	public AddressBook loadAllLists() {
+
 		DataAccessService das = new FileIOService();
 		return das.readAllData().getList();
 	}
 	
 	public AddressBook getList() {
-		return list;
+		return addressBook;
 	}
 	
 	public void setList(AddressBook list) {
-		this.list = list;
+		this.addressBook = list;
 	}
 
 	public String toString() {
-		return list.getTheList().toString();
+		return addressBook.getTheList().toString();
 		
 	}
 	

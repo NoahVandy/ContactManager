@@ -1,6 +1,7 @@
 package com.example.contactmanager;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.example.contactmanager.model.AddressBook;
 
@@ -8,13 +9,25 @@ import java.util.List;
 
 public class GlobalList extends Application {
 
-    private AddressBook globalList = new AddressBook();
+    private static Context context;
 
-    public AddressBook getGlobalList() {
+    private static AddressBook globalList = new AddressBook();
+
+    public static AddressBook getGlobalList() {
         return globalList;
     }
 
-    public void setGlobalList(AddressBook globalList) {
-        this.globalList = globalList;
+
+    public void onCreate() {
+        super.onCreate();
+        GlobalList.context = getApplicationContext();
     }
+
+    public static Context getAppContext() {
+        return GlobalList.context;
+    }
+
+//    public static void setGlobalList(AddressBook addressBook){
+//        addressBook = addressBook;
+//    }
 }

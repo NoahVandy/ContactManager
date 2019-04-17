@@ -3,19 +3,17 @@ package com.example.contactmanager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.contactmanager.businesServices.BusinessService;
-import com.example.contactmanager.dataAccess.DataAccess;
 import com.example.contactmanager.model.AddressBook;
 import com.example.contactmanager.model.BaseContact;
 import com.example.contactmanager.model.BusinessContact;
 import com.example.contactmanager.model.PersonContact;
-
-import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         lv_contactList = findViewById(R.id.lv_contactList);
 
 
-        addressBook = ((GlobalList) this.getApplication()).getGlobalList();
+        addressBook =  GlobalList.getGlobalList();
 
         adapter = new personAdapter(MainActivity.this, addressBook);
 
@@ -102,17 +100,24 @@ public class MainActivity extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataAccess da = new DataAccess(v.getContext());
-                da.writeList(addressBook, "contacts.txt");
+                BusinessService bs = new BusinessService();
+                Log.d("noah", bs.getList().toString());
+                bs.saveAllLists(addressBook);
             }
         });
 
         btn_load.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataAccess da = new DataAccess(v.getContext());
-                addressBook = da.readList("contacts.txt");
+                BusinessService bs = new BusinessService();
+
+                addressBook = bs.loadAllLists();
+                Log.d("noah", addressBook.toString());
+
+
                 adapter.notifyDataSetChanged();
+
+
 
             }
         });

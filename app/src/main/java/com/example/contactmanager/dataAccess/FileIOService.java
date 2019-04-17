@@ -1,10 +1,12 @@
 package com.example.contactmanager.dataAccess;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
 
+import com.example.contactmanager.GlobalList;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +30,7 @@ public class FileIOService implements DataAccessService {
 		BusinessService bs = new BusinessService();
 		
 		try {
-			bs = new ObjectMapper().readerFor(BusinessService.class).readValue(new File("Contacts.json"));
+			bs = new ObjectMapper().readerFor(BusinessService.class).readValue(new File("Contacts.json.txt"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,7 +44,10 @@ public class FileIOService implements DataAccessService {
 	ObjectMapper om = new ObjectMapper();
 		
 		try {
-			om.writerWithDefaultPrettyPrinter().writeValue(new File("Contacts.json"), bs);
+			File path = GlobalList.getAppContext().getExternalFilesDir(null);
+			File f = new File(path, "Contacts.json.txt");
+			Log.d("noah", f.getAbsolutePath().toString());
+			om.writerWithDefaultPrettyPrinter().writeValue(f, bs);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
