@@ -9,6 +9,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import java.nio.file.Path;
+
 
 import com.example.contactmanager.businesServices.BusinessService;
 import com.example.contactmanager.model.AddressBook;
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     ListView lv_contactList;
 
     personAdapter adapter;
+
+    GlobalList addressBook;
 
 
     @Override
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new personAdapter(MainActivity.this, GlobalList.getGlobalList());
 
         lv_contactList.setAdapter(adapter);
+
         Toast.makeText(this, "listsize=" + GlobalList.getGlobalList().getTheList().size(), Toast.LENGTH_SHORT).show();
 
 
@@ -135,46 +140,46 @@ public class MainActivity extends AppCompatActivity {
 
 
         // get contents of person
-        BaseContact p = GlobalList.getGlobalList().getTheList().get(position);
-        Toast.makeText(GlobalList.getAppContext(), "listsize=" + GlobalList.getGlobalList().getTheList().size(), Toast.LENGTH_SHORT).show();
+            BaseContact p = GlobalList.getGlobalList().getTheList().get(position);
+            Toast.makeText(GlobalList.getAppContext(), "listsize=" + GlobalList.getGlobalList().getTheList().size(), Toast.LENGTH_SHORT).show();
 
-        if (p instanceof PersonContact) {
-            Intent i = new Intent(getApplicationContext(), addPersonContact.class);
-            i.putExtra("edit",  position);
-            i.putExtra("name", p.getName());
-            i.putExtra("streetName", p.getStreetName());
-            i.putExtra("city", p.getCity());
-            i.putExtra("state", p.getState());
-            i.putExtra("zip", p.getPostalCode());
-            i.putExtra("country", p.getCountry());
-            i.putExtra("phoneNumber", p.getPhoneNumber());
-            i.putExtra("email", p.getEmail());
-            i.putExtra("photoName", p.getPhotoName());
-            i.putExtra("relationship", ((PersonContact) p).getRelationship());
-            i.putExtra("birthday", ((PersonContact) p).getBirthday());
+            if (p instanceof PersonContact) {
+                Intent i = new Intent(getApplicationContext(), addPersonContact.class);
+                i.putExtra("edit",  position);
+                i.putExtra("name", p.getName());
+                i.putExtra("streetName", p.getStreetName());
+                i.putExtra("city", p.getCity());
+                i.putExtra("state", p.getState());
+                i.putExtra("zip", p.getPostalCode());
+                i.putExtra("country", p.getCountry());
+                i.putExtra("phoneNumber", p.getPhoneNumber());
+                i.putExtra("email", p.getEmail());
+                i.putExtra("photoName", p.getPhotoName());
+                i.putExtra("relationship", ((PersonContact) p).getRelationship());
+                i.putExtra("birthday", ((PersonContact) p).getBirthday());
 
-            startActivity(i);
-        }
-        else if( p instanceof BusinessContact){
-            Intent i = new Intent(getApplicationContext(), addBusinessContact.class);
+                startActivity(i);
+            }
+            else if( p instanceof BusinessContact){
+                Intent i = new Intent(getApplicationContext(), addBusinessContact.class);
 
-            i.putExtra("edit",  position);
-            i.putExtra("name", p.getName());
-            i.putExtra("streetName", p.getStreetName());
-            i.putExtra("city", p.getCity());
-            i.putExtra("state", p.getState());
-            i.putExtra("zip", p.getPostalCode());
-            i.putExtra("country", p.getCountry());
-            i.putExtra("phoneNumber", p.getPhoneNumber());
-            i.putExtra("email", p.getEmail());
-            i.putExtra("photoName", p.getPhotoName());
-            i.putExtra("open", ((BusinessContact) p).getOpen());
-            i.putExtra("close", ((BusinessContact) p).getClose());
-            i.putExtra("desc", ((BusinessContact) p).getDesc());
-            i.putExtra("daysOfWeekOpen", ((BusinessContact) p).getDaysOfWeekOpen());
-            i.putExtra("URL", ((BusinessContact) p).getUrl());
+                i.putExtra("edit",  position);
+                i.putExtra("name", p.getName());
+                i.putExtra("streetName", p.getStreetName());
+                i.putExtra("city", p.getCity());
+                i.putExtra("state", p.getState());
+                i.putExtra("zip", p.getPostalCode());
+                i.putExtra("country", p.getCountry());
+                i.putExtra("phoneNumber", p.getPhoneNumber());
+                i.putExtra("email", p.getEmail());
+                i.putExtra("photoName", p.getPhotoName());
+                i.putExtra("open", ((BusinessContact) p).getOpen());
+                i.putExtra("close", ((BusinessContact) p).getClose());
+                i.putExtra("desc", ((BusinessContact) p).getDesc());
+                i.putExtra("daysOfWeekOpen", ((BusinessContact) p).getDaysOfWeekOpen());
+                i.putExtra("URL", ((BusinessContact) p).getUrl());
 
-            startActivity(i);
+                startActivity(i);
         }
 
 

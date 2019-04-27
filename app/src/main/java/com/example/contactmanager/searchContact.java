@@ -76,6 +76,8 @@ public class searchContact extends AppCompatActivity {
         int searchPosition = addressBook.searchFor(search, i);
         //error checking
         if (searchPosition != -1){
+
+            //populating the new addressbook with search results form the original addressbook
             searchBook.getTheList().add(addressBook.getTheList().get(searchPosition));
 
             return addressBook.getTheList().get(searchPosition);

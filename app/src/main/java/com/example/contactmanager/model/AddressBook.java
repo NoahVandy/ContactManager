@@ -49,7 +49,6 @@ public class AddressBook {
 	}
 
 	public int searchFor(String search, int i) {
-		//this loop checks every item in the list
 			//if statement checks to see if there is a match to every property
 			if (theList.get(i).getName().contains(search) || theList.get(i).getPhoneNumber().contains(search) || theList.get(i).getStreetName().contains(search) || theList.get(i).getState().contains(search) || theList.get(i).getPostalCode().contains(search) || theList.get(i).getName().contains(search) || theList.get(i).getCountry().contains(search) || theList.get(i).getPhotoName().contains(search) || theList.get(i).getEmail().contains(search)) {
 				//returns the number in the contact list if it finds one

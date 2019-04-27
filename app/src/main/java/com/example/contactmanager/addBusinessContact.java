@@ -1,6 +1,10 @@
 package com.example.contactmanager;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,10 +25,12 @@ public class addBusinessContact extends AppCompatActivity {
 
     CheckBox cb_sunday, cb_monday, cb_tuesday, cb_wednesday, cb_thursday, cb_friday, cb_saturday;
 
-    Button btn_addBusiness;
+    Button btn_addBusiness, btn_call, btn_text, btn_navigate, btn_email;
 
     AddressBook addressBook;
     int positionToEdit = -1;
+
+    private final static int REQUEST_CALL = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,10 @@ public class addBusinessContact extends AppCompatActivity {
 
 
         btn_addBusiness = findViewById(R.id.btn_addBusiness);
+        btn_call = findViewById(R.id.btn_call);
+        btn_text = findViewById(R.id.btn_text);
+        btn_navigate = findViewById(R.id.btn_navigate);
+        btn_email = findViewById(R.id.btn_email);
         et_name = findViewById(R.id.et_name);
         et_streetName = findViewById(R.id.et_streetName);
         et_city = findViewById(R.id.et_city);
@@ -60,6 +70,49 @@ public class addBusinessContact extends AppCompatActivity {
 
 
 
+        btn_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callPhoneNumber(et_phoneNumber.getText().toString());
+            }
+        });
+
+        btn_navigate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String mapsQuery ="geo:0,0?q=" + et_streetName.getText().toString() + " "  + et_city.getText().toString() + " " + et_state.getText().toString() + " " + et_zip.getText().toString() + " " + et_country.getText().toString();
+                Uri mapUri = Uri.parse(mapsQuery);
+                showMap(mapUri);
+            }
+        });
+
+        btn_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), emailOrTextContact.class);
+
+                i.putExtra("phoneNumber", et_phoneNumber.getText().toString());
+                i.putExtra("key", "text");
+
+                startActivity(i);
+            }
+        });
+
+        btn_email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), emailOrTextContact.class);
+
+                i.putExtra("phoneNumber", et_email.getText().toString());
+                i.putExtra("key", "email");
+
+                startActivity(i);
+            }
+        });
+
+
+
+
 
         Bundle incomingMessages = getIntent().getExtras();
 
@@ -80,6 +133,9 @@ public class addBusinessContact extends AppCompatActivity {
             String URL = incomingMessages.getString("URL");
 
             positionToEdit = incomingMessages.getInt("edit");
+
+
+
             if(positionToEdit > -1){
                 addressBook.getTheList().remove(positionToEdit);
             }
@@ -147,5 +203,28 @@ public class addBusinessContact extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    public void callPhoneNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        if (ActivityCompat.checkSelfPermission(addBusinessContact.this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(addBusinessContact.this,
+                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+        } else{
+
+            startActivity(intent);
+        }
+    }
+
+
+    public void showMap(Uri geoLocation) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }

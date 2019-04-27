@@ -1,6 +1,10 @@
 package com.example.contactmanager;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,20 +13,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.contactmanager.businesServices.BusinessService;
 import com.example.contactmanager.model.AddressBook;
 import com.example.contactmanager.model.PersonContact;
 
-import java.util.Collections;
-
 public class addPersonContact extends AppCompatActivity {
 
-    Button btn_addPerson;
+    Button btn_addPerson, btn_call, btn_text, btn_navigate, btn_email;
 
     EditText et_name, et_streetName, et_city, et_state, et_zip, et_country, et_phoneNumber, et_email, et_photoName, et_relationship, et_birthday;
+
+
     int positionToEdit = -1;
 
     AddressBook addressBook;
+
+
+    private final static int REQUEST_CALL = 1;
 
 
 
@@ -36,6 +42,11 @@ public class addPersonContact extends AppCompatActivity {
 
 
         btn_addPerson = findViewById(R.id.btn_addPerson);
+        btn_call = findViewById(R.id.btn_call);
+        btn_text = findViewById(R.id.btn_text);
+        btn_navigate = findViewById(R.id.btn_navigate);
+        btn_email = findViewById(R.id.btn_email);
+
         et_name = findViewById(R.id.et_name);
         et_streetName = findViewById(R.id.et_streetName);
         et_city = findViewById(R.id.et_city);
@@ -47,6 +58,58 @@ public class addPersonContact extends AppCompatActivity {
         et_photoName = findViewById(R.id.et_photoName);
         et_relationship = findViewById(R.id.et_relationship);
         et_birthday = findViewById(R.id.et_birthday);
+
+        //making the android functions
+
+
+        btn_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callPhoneNumber(et_phoneNumber.getText().toString());
+            }
+        });
+
+        btn_navigate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String mapsQuery ="geo:0,0?q=" + et_streetName.getText().toString() + " "  + et_city.getText().toString() + " " + et_state.getText().toString() + " " + et_zip.getText().toString() + " " + et_country.getText().toString();
+                Uri mapUri = Uri.parse(mapsQuery);
+                showMap(mapUri);
+            }
+        });
+
+        btn_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), emailOrTextContact.class);
+
+                i.putExtra("phoneNumber", et_phoneNumber.getText().toString());
+                i.putExtra("key", "text");
+
+                startActivity(i);
+            }
+        });
+
+        btn_email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), emailOrTextContact.class);
+
+                i.putExtra("phoneNumber", et_email.getText().toString());
+                i.putExtra("key", "email");
+
+                startActivity(i);
+            }
+        });
+
+
+
+
+
+
+
+
+
 
 
         Bundle incomingMessages = getIntent().getExtras();
@@ -124,5 +187,42 @@ public class addPersonContact extends AppCompatActivity {
             }
         });
 
+
+
+
+
+
+
+
+
+
     }
+
+    //making the functions for the android functions
+
+
+
+    public void callPhoneNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        if (ActivityCompat.checkSelfPermission(addPersonContact.this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(addPersonContact.this,
+                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+        } else{
+
+            startActivity(intent);
+        }
+    }
+
+
+    public void showMap(Uri geoLocation) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+
 }

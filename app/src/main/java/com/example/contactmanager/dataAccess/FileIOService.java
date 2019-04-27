@@ -10,7 +10,7 @@ import com.example.contactmanager.GlobalList;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.nio.file.Path;
 import com.example.contactmanager.businesServices.BusinessService;
 import com.example.contactmanager.model.AddressBook;
 
@@ -31,6 +31,7 @@ public class FileIOService implements DataAccessService {
 		
 		try {
 			File path = GlobalList.getAppContext().getExternalFilesDir(null);
+			Log.d("noah", "reading from path: " + path);
 			a = new ObjectMapper().readerFor(AddressBook.class).readValue(new File(path,"Contacts.json.txt"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -47,7 +48,9 @@ public class FileIOService implements DataAccessService {
 		try {
 			File path = GlobalList.getAppContext().getExternalFilesDir(null);
 			File f = new File(path, "Contacts.json.txt");
+
 			Log.d("noah", f.getAbsolutePath().toString());
+			Log.d("noah", "this is the path: " + path);
 			om.writerWithDefaultPrettyPrinter().writeValue(f, a);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
